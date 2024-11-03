@@ -12,9 +12,9 @@ const ProductItem = ({title, bookName,image,price}) => {
         <View>
           <Text className="font-bold">{bookName}</Text>
           <Text className="text-xs">{title}</Text>
-        </View>
+        </View> 
         <View className="mt-2">
-          <Text className="text-xs">{price}.000 vnd</Text>
+          <Text className="text-xs">{new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(price)}</Text>
         </View>
       </View>
       </View>

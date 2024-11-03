@@ -13,7 +13,7 @@ const CartItem = ({bookName, image, price, title, qty, id}) => {
         if(res.success===true){
           setCartItems(res.data)
         }
-      }
+    }
 
     return(
         <View >
@@ -26,7 +26,7 @@ const CartItem = ({bookName, image, price, title, qty, id}) => {
                         <Text className="font-bold" numberOfLines={1}>{bookName}</Text>
                         <Text className="text-xs">{title}</Text>
                         <Text className="font-extrabold">Số lượng: {qty}</Text>
-                        <Text className="font-extrabold">Giá: {price}.000 vnd</Text>
+                        <Text className="font-extrabold">Giá: {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(price)}</Text>
                     </View>
                     <View className="flex-row  px-3 h-8 justify-center items-center bg-gray-200  rounded-3xl">
                         <Pressable onPress={removeItem} className="mr-2 flex-row">

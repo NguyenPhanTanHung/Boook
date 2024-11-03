@@ -20,7 +20,7 @@ const TotalSummaryCart = ({totalPrice}) => {
         <View className="border border-gray-200 rounded-lg p-6">
           <View className="flex-row justify-between items-center">
             <Text className="font-bold text-lg">Tổng :</Text>
-            <Text className="font-extrabold text-xl">{totalPrice}.000 vnd</Text>
+            <Text className="font-extrabold text-xl">{new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(totalPrice)}</Text>
           </View>
           <Pressable onPress={placeOrder} className="bg-black py-4 rounded-lg mt-6">
             <Text className="font-semibold text-white text-center">Thanh Toán</Text>

@@ -9,7 +9,7 @@ const NewArrivalsCard = ({ title, image, price, bookName }) => {
       <Image source={{ uri: image }} className="rounded-x1 h-36 w-32" />
       <View className="mt-2 justify-center items-center">
         <Text className="font-bold max-w-4">{shortenedBookName}</Text>
-        <Text className="text-xs">{price} vnd</Text>
+        <Text className="text-xs">{new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(price)}</Text>
       </View>
     </View>
   );

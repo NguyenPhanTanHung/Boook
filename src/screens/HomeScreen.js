@@ -1,5 +1,5 @@
 import React, { useEffect, useContext, useState } from 'react';
-import { View, Text, Pressable, Image, ScrollView, TextInput, TouchableWithoutFeedback } from 'react-native';
+import { View, Text, Pressable, Image, ScrollView, TextInput, FlatList, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
@@ -11,7 +11,6 @@ import AuthContext from '../features/context/authContext';
 import { getProducts } from '../features/firebase/product';
 import productContext from '../features/context/productContext';
 
-
 const HomeScreen = ({ navigation }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const { isLoggedIn, currentUser } = useContext(AuthContext);
@@ -19,6 +18,36 @@ const HomeScreen = ({ navigation }) => {
 
   const navigateToDetailScreen = (productId) => {
     navigation.navigate("detailscreen", { productId: productId });
+  };
+
+  const navigateToCategoryScreen = (category) => {
+    navigation.navigate("category", { category: category });
+  }
+
+
+  const categories = [
+    "Công Nghệ Thông Tin",
+    "Học Ngoại Ngữ",
+    "Kiến Trúc - Xây Dựng",
+    "Marketing - Bán hàng",
+    "Thể Thao - Nghệ Thuật"
+  ];
+
+  const CategoryList = () => {
+    return (
+      <FlatList
+        data={categories}
+        keyExtractor={(item) => item}
+        horizontal={true}
+        scrollEnabled={true}
+        showsHorizontalScrollIndicator={false}
+        renderItem={({ item }) => (
+          <TouchableOpacity className="py-4 border border-gray-300 mx-5 rounded-xl max-w-xs min-w-max" onPress={() => navigateToCategoryScreen(item)}>
+            <Text className="text-xs">{item}</Text>
+          </TouchableOpacity>
+        )}
+      />
+    );
   };
 
   const fetchAllProducts = async () => {
@@ -33,7 +62,7 @@ const HomeScreen = ({ navigation }) => {
     fetchAllProducts()
   }, [])
   return (
-    <SafeAreaView className="flex-1 bg-white">
+    <SafeAreaView className="flex-1 bg-white content-between">
       <View className="flex-row px-5 mt-6 justify-between items-center">
         <View className="bg-black rounded-full w-10 h-10 justify-center items-center">
           <MaterialIcons name='menu' size={24} color={"#fff"} />
@@ -42,15 +71,9 @@ const HomeScreen = ({ navigation }) => {
           <Pressable className="flex-row items-center justify-center border border-slate-400 rounded-full h-23 w-30 m-3"
             onPress={() => setModalVisible(!modalVisible)}>
             <Image source={UserLogo} className="h-4 w-4 bg-transparent m-1"></Image>
-            <Text className="font-semibold py-2 pr-4 pl-2">Login</Text>
+            <Text className="font-semibold py-2 pr-4 pl-2">Đăng nhập</Text>
           </Pressable>
         </View>}
-      </View>
-      <View className="mt-6 px-5">
-        <Text className="font-bold text-2xl">Welcome,
-          <Text className="font-bold text-slate-500 ml-2">{currentUser?.name ? currentUser.name : 'Guest'}</Text>
-        </Text>
-        <Text className="font-bold text-xl text-gray-500">Book_Chili</Text>
       </View>
       <View className="mt-6 px-5">
         <View className="flex-row bg-gray-200 p-2 px-3 items-center rounded-3x1">
@@ -63,18 +86,22 @@ const HomeScreen = ({ navigation }) => {
             className="px-2" />
         </View>
       </View>
-      <View className="mt-6 p-5">
-        <OfferCard />
+      <View className="mt-4 px-5 font-extrabold">
+        {CategoryList()}
       </View>
-      <View className="mt-4">
+      <View className="items-center content-center justify-center h-[41%] mt-1">
+        <Text className="absolute top-0 left-4 text-base font-semibold">Best Seller: </Text>
+        <OfferCard navigation={navigation} />
+      </View>
+      <View className="mt-1">
         <View className="flex-row justify-between items-center px-5">
-          <Text className="text-lg font-extrabold">New Arrivals</Text>
+          <Text className="text-lg font-extrabold">Dành cho bạn</Text>
           <Pressable onPress={() => navigation.navigate("productlistscreen")}>
-            <Text className="text-xs text-gray-500">View all</Text>
+            <Text className="text-xs text-gray-500">Xem tất cả</Text>
           </Pressable>
         </View>
         <ScrollView
-          className="mt-4 ml-5"
+          className="mt-2 ml-5"
           horizontal={true}
           showsHorizontalScrollIndicator={false}>
           {products && products?.map(product => (
@@ -89,12 +116,10 @@ const HomeScreen = ({ navigation }) => {
           ))}
         </ScrollView>
       </View>
-      <View>
-        <AuthenticationModal
-          modalVisible={modalVisible}
-          setModalVisible={setModalVisible} 
-          onclose={() => setModalVisible(false)} />
-      </View>
+      <AuthenticationModal
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+        onclose={() => setModalVisible(false)} />
     </SafeAreaView>
   );
 };
