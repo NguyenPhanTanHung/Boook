@@ -8,14 +8,14 @@ import AuthContext from "../features/context/authContext";
 import { getCartItems } from "../features/firebase/cart";
 import TotalSummaryCart from '../components/TotalSumaryCart'
 
-const CartScreen = ({navigation}) => {
+const CartScreen = ({ navigation }) => {
   const [total, setTotal] = useState();
   const { currentUser, isLoggedIn } = useContext(AuthContext);
   const { cartItems, setCartItems } = useContext(cartContext);
 
-  const calculateTotalAmount = async(data) =>{
+  const calculateTotalAmount = async (data) => {
     const subTotal = await data.reduce(
-      (acc, item) => acc + (Number(item.price)*Number(item.qty)), 0);
+      (acc, item) => acc + (Number(item.price) * Number(item.qty)), 0);
     setTotal(subTotal);
   }
   const fetchCartItems = async () => {
@@ -26,6 +26,10 @@ const CartScreen = ({navigation}) => {
       calculateTotalAmount(res.data);
     }
   };
+
+  const minimizeScrollFuncName = (name) => {
+    return name.length > 25 ? name.substring(0, 35) + '...' : name;
+  }
 
   useEffect(() => {
     navigation.setOptions({
@@ -41,16 +45,16 @@ const CartScreen = ({navigation}) => {
       </View>
       {isLoggedIn ? (
         <ScrollView className="mt-4 " showsVerticalScrollIndicator={false}>
-          {cartItems?.map((item)=>(
-            <CartItem 
-              key={item.id}
+          {cartItems?.map((item, index) => (
+            <CartItem
+              key={index}
               id={item.id}
               bookName={item.bookName}
-              title={item.title}
+              title={minimizeScrollFuncName(item.title)}
               qty={item.qty}
               price={item.price}
               image={item.image}
-              />
+            />
           ))}
         </ScrollView>
       ) : (
@@ -58,9 +62,14 @@ const CartScreen = ({navigation}) => {
           <Text className="font-bold text-lg">Hãy đăng nhập</Text>
         </View>
       )}
-      <View>
-        <TotalSummaryCart totalPrice={total} />
-      </View>
+      {
+        isLoggedIn && (
+          <View>
+            <TotalSummaryCart totalPrice={total} />
+          </View>
+        )
+      }
+
     </SafeAreaView>
   );
 };
