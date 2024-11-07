@@ -20,7 +20,7 @@ const CategoryScreen = ({ navigation, route }) => {
     useEffect(() => {
         navigation.setOptions({
             headerShown: true,
-            headerTitle: "Products",
+            headerTitle:"Thể Loại",
             headerStyle: { backgroundColor: "white" },
             headerTitleAlign: "center",
             headerLeft: () => (

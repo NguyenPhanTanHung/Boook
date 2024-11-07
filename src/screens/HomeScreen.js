@@ -23,6 +23,10 @@ const HomeScreen = ({ navigation }) => {
   const navigateToCategoryScreen = (category) => {
     navigation.navigate("category", { category: category });
   }
+  const profile = () => {
+    navigation.jumpTo("profile");
+  }
+   
 
 
   const categories = [
@@ -30,7 +34,8 @@ const HomeScreen = ({ navigation }) => {
     "Học Ngoại Ngữ",
     "Kiến Trúc - Xây Dựng",
     "Marketing - Bán hàng",
-    "Thể Thao - Nghệ Thuật"
+    "Thể Thao - Nghệ Thuật",
+    "Truyện cười",
   ];
 
   const CategoryList = () => {
@@ -61,21 +66,27 @@ const HomeScreen = ({ navigation }) => {
     })
     fetchAllProducts()
   }, [])
+  
   return (
-    <SafeAreaView className="flex-1 bg-white content-between">
-      <View className="flex-row px-5 mt-6 justify-between items-center">
-        <View className="bg-black rounded-full w-10 h-10 justify-center items-center">
-          <MaterialIcons name='menu' size={24} color={"#fff"} />
+    <ScrollView className="flex-1 bg-white">
+      <View className="flex-row px-5 justify-between items-center">
+        <View className="rounded-full w-40 h-40 justify-center items-center">
+          <Image style={{ resizeMode: 'contain', width: '100%', height: '100%' }} source={require('../../assets/Logo.png')} />
         </View>
-        {!isLoggedIn && <View>
+        {isLoggedIn ? <View>
+          <Pressable className="flex-row items-center justify-center border border-slate-400 rounded-full h-23 w-30 m-3"  onPress={profile}>
+            <Image source={UserLogo} className="h-4 w-4 bg-transparent m-1"></Image>
+            <Text className="font-semibold py-2 pr-4 pl-2">Hello {currentUser .name}</Text>
+          </Pressable>
+        </View> :(<View>
           <Pressable className="flex-row items-center justify-center border border-slate-400 rounded-full h-23 w-30 m-3"
             onPress={() => setModalVisible(!modalVisible)}>
             <Image source={UserLogo} className="h-4 w-4 bg-transparent m-1"></Image>
             <Text className="font-semibold py-2 pr-4 pl-2">Đăng nhập</Text>
           </Pressable>
-        </View>}
+        </View>)}
       </View>
-      <View className="mt-6 px-5">
+      <View className="mt-1 px-5">
         <View className="flex-row bg-gray-200 p-2 px-3 items-center rounded-3x1">
           <View>
             <MaterialIcons name='search' size={24} color={'#111'} />
@@ -93,7 +104,7 @@ const HomeScreen = ({ navigation }) => {
         <Text className="absolute top-0 left-4 text-base font-semibold">Best Seller: </Text>
         <OfferCard navigation={navigation} />
       </View>
-      <View className="mt-1">
+      <View className="mt-1 my-2">
         <View className="flex-row justify-between items-center px-5">
           <Text className="text-lg font-extrabold">Dành cho bạn</Text>
           <Pressable onPress={() => navigation.navigate("productlistscreen")}>
@@ -116,11 +127,37 @@ const HomeScreen = ({ navigation }) => {
           ))}
         </ScrollView>
       </View>
+      <View className="mt-1 my-2">
+        <View className="flex-row justify-between items-center px-5">
+          <Text className="text-lg font-extrabold">Giá rẻ</Text>
+          <Pressable onPress={() => navigation.navigate("productlistscreen")}>
+            <Text className="text-xs text-gray-500">Xem tất cả</Text>
+          </Pressable>
+        </View>
+        <ScrollView
+          className="mt-2 ml-5"
+          horizontal={true}
+          showsHorizontalScrollIndicator={false}>
+          {products && products
+            .filter(product => product.price < 150000) // Lọc sản phẩm có giá dưới 150000
+            .map(product => (
+              <Pressable key={product.id} onPress={() => navigateToDetailScreen(product.id)}>
+                <NewArrivalsCard
+                  title={product.title}
+                  image={product.image}
+                  description={product.description}
+                  price={product.price}
+                  bookName={product.bookName} />
+              </Pressable>
+            ))}
+        </ScrollView>
+      </View>
       <AuthenticationModal
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
         onclose={() => setModalVisible(false)} />
-    </SafeAreaView>
+      
+    </ScrollView>
   );
 };
 

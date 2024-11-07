@@ -1,15 +1,16 @@
-import {Text, View,Pressable } from "react-native";
-import React, { useContext } from "react";
+import { Text, View, Pressable, Modal, TextInput, Alert } from "react-native";
+import React, { useContext, useState } from "react";
+import { useNavigation } from '@react-navigation/native';
 
 import cartContext from "../features/context/cartContext";
 import orderContext from "../features/context/orderContext";
 import { addToOrders } from "../features/firebase/order";
 
 const TotalSummaryCart = ({ totalPrice }) => {
+    const navigation = useNavigation();
     const { setCartItems } = useContext(cartContext);
     const { setOrdersItems } = useContext(orderContext);
 
-    // State để quản lý hiển thị modal và thông tin người đặt
     const [modalVisible, setModalVisible] = useState(false);
     const [name, setName] = useState('');
     const [phone, setPhone] = useState('');
@@ -17,13 +18,25 @@ const TotalSummaryCart = ({ totalPrice }) => {
     const [deliveryTime, setDeliveryTime] = useState('');
 
     const placeOrder = async () => {
-      const res = await addToOrders();
-      if(res.success===true){
-       show("Order Successfully!!!".BOTTOM)
-        setCartItems([])
-        setOrdersItems(res.data)
-      }
-    }
+        const res = await addToOrders( name, phone, address, deliveryTime );
+        setModalVisible(false);
+        setCartItems([]);
+        if (res.success === true) {
+            Alert.alert("Thông báo", "Đặt hàng thành công!", [
+                {
+                    text: "OK",
+                    onPress: () => {
+                        setCartItems([]); // Xóa giỏ hàng sau khi đặt hàng thành công
+                        setOrdersItems(res.data);
+                        setModalVisible(false); // Đóng modal sau khi đặt hàng
+                    }
+                }
+            ]);
+        } else {
+            Alert.alert("Thông báo", "Đặt hàng không thành công. Vui lòng thử lại.");
+        }
+    };
+
     return (
         <View className="border border-gray-200 rounded-lg p-6">
             <View className="flex-row justify-between items-center">
@@ -43,8 +56,8 @@ const TotalSummaryCart = ({ totalPrice }) => {
                 visible={modalVisible}
                 onRequestClose={() => setModalVisible(false)}
             >
-                <View className="flex-1 justify-center items-center bg-gray-800 bg-opacity-50">
-                    <View className="bg-white rounded-lg p-6 w-80">
+               <View className="flex-1 justify-center items-center bg-black/[0.5]">
+                <View className="bg-white rounded-lg p-6 w-80">
                         <Text className="font-bold text-lg mb-4">Nhập thông tin đặt hàng</Text>
                         <TextInput
                             placeholder="Tên người đặt"

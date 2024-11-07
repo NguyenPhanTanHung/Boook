@@ -21,7 +21,7 @@ const ProductListScreen = ({ navigation }) => {
   useEffect(() => {
     navigation.setOptions({
       headerShown: true,
-      headerTitle: "Products",
+      headerTitle: "Tất cả sách",
       headerStyle: { backgroundColor: "white" },
       headerTitleAlign: "center",
       headerLeft: () => (

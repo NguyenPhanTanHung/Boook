@@ -32,8 +32,8 @@ const OrderScreen = ({navigation}) => {
       </View>
       {isLoggedIn ?
         <ScrollView className="mt-4 pt-4 " showsVerticalScrollIndicator={false}>
-          {orders?.map((order) => (
-            <OrderItem key={order.id} bookName={order.bookName} qty={order.qty}
+          {orders?.map((order,index) => (
+            <OrderItem key={index} bookName={order.bookName} qty={order.qty}
             title={order.title} date={order.date} orderId={order.orderId} 
             image={order.image} price={order.price}  />
             ))}

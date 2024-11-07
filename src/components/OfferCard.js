@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { View, Text, Animated, Image, StyleSheet, TouchableOpacity, Easing, PanResponder } from "react-native";
 import book1 from '../../assets/bookCover/book1.jpg';
 import book2 from '../../assets/bookCover/book2.jpg';
@@ -12,6 +12,12 @@ const OfferCard = ({ navigation }) => {
     const opacityValue = useRef(new Animated.Value(1)).current;
     const scaleValue = useRef(new Animated.Value(1.3)).current;
     const translateXValue = useRef(new Animated.Value(50)).current;
+
+    useEffect(() => {
+        setInterval(() => {
+            animateProperties('next')
+        }, [3000])
+    }, [])
 
     const goToScreen = (productId) => {
         navigation.navigate("detailscreen", { productId: productId });
