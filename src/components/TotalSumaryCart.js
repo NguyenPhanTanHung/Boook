@@ -1,4 +1,4 @@
-import {Text, View,Pressable } from "react-native";
+import {Text, View,Pressable, Alert } from "react-native";
 import React, { useContext } from "react";
 
 import cartContext from "../features/context/cartContext";
@@ -11,7 +11,7 @@ const TotalSummaryCart = ({totalPrice}) => {
     const placeOrder = async () => {
       const res = await addToOrders();
       if(res.success===true){
-       show("Order Successfully!!!".BOTTOM)
+       Alert.alert("Order Successfully!!!")
         setCartItems([])
         setOrdersItems(res.data)
       }

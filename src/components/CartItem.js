@@ -6,14 +6,20 @@ import cartContext from "../features/context/cartContext";
 import { removeItemById } from "../features/firebase/cart";
 
 const CartItem = ({bookName, image, price, title, qty, id}) => {
-    const {setCartItems} = useContext(cartContext)
+    const { cartItems, setCartItems } = useContext(cartContext);
 
-    const removeItem = async() =>{
-        const res = await removeItemById(id)
-        if(res.success===true){
-          setCartItems(res.data)
+    const removeItem = async () => {
+        if (!cartItems) {
+            console.warn("cartItem is undefined", cartItems);
+            return;
         }
-    }
+        setCartItems(cartItems.filter(item => item.id !== id));
+        const res = await removeItemById(id);
+        if (res.success === true) {
+            setCartItems(res.data);
+        }
+    };
+    
 
     return(
         <View >

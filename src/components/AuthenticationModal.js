@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Modal, Pressable, View, Text, TextInput, TouchableOpacity, Alert } from "react-native";
+import { Modal, Pressable, View, Text, TextInput, TouchableOpacity, Alert, ActivityIndicator } from "react-native";
 import { registerWithEmailAndPassword, loginWithEmailAndPassword } from "../features/firebase/userAuth";
 import AuthContext from "../features/context/authContext";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
@@ -9,10 +9,12 @@ const AuthenticationModal = ({ modalVisible, setModalVisible, onclose }) => {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [loading, setLoading] = useState(false);
 
     const { currentUser, setCurrentUser, setIsLoggedIn } = useContext(AuthContext);
 
     const handleLogin = async () => {
+        setLoading(true);
         try {
             const res = await loginWithEmailAndPassword(email, password);
             if (res.success === true) {
@@ -34,10 +36,13 @@ const AuthenticationModal = ({ modalVisible, setModalVisible, onclose }) => {
                     style: 'cancel',
                 },
             ]);
+        } finally {
+            setLoading(false);
         }
     };
 
     const handleRegister = async () => {
+        setLoading(true);
         try {
             const res = await registerWithEmailAndPassword(name, email, password);
             if (res.success === true) {
@@ -45,6 +50,8 @@ const AuthenticationModal = ({ modalVisible, setModalVisible, onclose }) => {
             }
         } catch (error) {
             console.error("Heloo", error);
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -94,15 +101,15 @@ const AuthenticationModal = ({ modalVisible, setModalVisible, onclose }) => {
                                 secureTextEntry={true}
                             />
                             <TouchableOpacity className="bg-black py-4 mt-6 rounded-lg" onPress={handleLogin}>
-                                <Text className="text-white font-semibold text-center">
-                                    Login
-                                </Text>
+                                {
+                                    loading ? <ActivityIndicator  size={'large'}/> : <Text className="text-white font-semibold text-center">Đăng nhập</Text>
+                                }
                             </TouchableOpacity>
 
                             <View className="flex-row justify-center items-center mt-4">
-                                <Text className="text-slate-500">Not a user?</Text>
+                                <Text className="text-slate-500">Chưa có tài khoản?</Text>
                                 <Pressable onPress={() => setType("register")}>
-                                    <Text className="font-bold"> Register</Text>
+                                    <Text className="font-bold">Đăng ký</Text>
                                 </Pressable>
                             </View>
                         </View>
@@ -143,13 +150,15 @@ const AuthenticationModal = ({ modalVisible, setModalVisible, onclose }) => {
                                 className="bg-black py-4 mt-6 rounded-lg"
                                 onPress={handleRegister}
                             >
-                                <Text className="text-white font-semibold text-center">Register</Text>
+                                {
+                                    loading ? <ActivityIndicator  size={'large'}/> : <Text className="text-white font-semibold text-center">Đăng ký</Text>
+                                }
                             </TouchableOpacity>
 
                             <View className="flex-row justify-center items-center mt-4">
-                                <Text className="text-slate-500">Already a User?</Text>
+                                <Text className="text-slate-500">Đã có tài khoản?</Text>
                                 <Pressable onPress={() => setType("login")}>
-                                    <Text className="font-bold"> Login</Text>
+                                    <Text className="font-bold">Đăng nhập</Text>
                                 </Pressable>
                             </View>
                         </View>

@@ -28,7 +28,9 @@ const CartScreen = ({ navigation }) => {
   };
 
   const minimizeScrollFuncName = (name) => {
-    return name.length > 25 ? name.substring(0, 35) + '...' : name;
+    if ( name?.length){
+      return name.length > 25 ? name.substring(0, 35) + '...' : name;
+    } else return null;
   }
 
   useEffect(() => {
