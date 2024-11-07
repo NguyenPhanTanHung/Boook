@@ -1,5 +1,5 @@
-import { Text, View, Pressable, TextInput, Modal, Alert } from "react-native";
-import React, { useContext, useState } from "react";
+import {Text, View,Pressable } from "react-native";
+import React, { useContext } from "react";
 
 import cartContext from "../features/context/cartContext";
 import orderContext from "../features/context/orderContext";
@@ -17,20 +17,13 @@ const TotalSummaryCart = ({ totalPrice }) => {
     const [deliveryTime, setDeliveryTime] = useState('');
 
     const placeOrder = async () => {
-        const res = await addToOrders({ name, phone, address, deliveryTime });
-        if (res.success === true) {
-            Alert.alert("Thông báo", "Đặt hàng thành công!", [
-                { text: "OK", onPress: () => {
-                    setCartItems([]);
-                    setOrdersItems(res.data);
-                    setModalVisible(false); // Đóng modal sau khi đặt hàng thành công
-                }}
-            ]);
-        } else {
-            Alert.alert("Thông báo", "Đặt hàng không thành công. Vui lòng thử lại.");
-        }
-    };
-
+      const res = await addToOrders();
+      if(res.success===true){
+       show("Order Successfully!!!".BOTTOM)
+        setCartItems([])
+        setOrdersItems(res.data)
+      }
+    }
     return (
         <View className="border border-gray-200 rounded-lg p-6">
             <View className="flex-row justify-between items-center">
