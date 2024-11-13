@@ -7,6 +7,7 @@ import OrderScreen from '../screens/OrderScreen'
 import ProfileScreen from '../screens/ProfileScreen'
 import React from "react";
 import CategoryScreen from '../components/CategoryScreen';
+import Search from '../components/Search';
 
 const Stack = createStackNavigator()
 
@@ -24,6 +25,7 @@ const MainStackNavigator = () => {
             <Stack.Screen name="detailscreen" component={DetailScreen} />
             <Stack.Screen name="productlistscreen" component={ProductListScreen} />
             <Stack.Screen name="category" component={CategoryScreen} />
+            <Stack.Screen name="search" component={Search} />
         </Stack.Navigator>
     )
 }

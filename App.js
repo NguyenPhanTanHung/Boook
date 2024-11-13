@@ -7,10 +7,11 @@ import { AuthProvider } from './src/features/context/authContext';
 import { ProductProvider } from './src/features/context/productContext';
 import { CartProvider} from './src/features/context/cartContext'
 import {OrderProvider} from './src/features/context/orderContext'
-import { View } from "react-native";
+
 NativeWindStyleSheet.setOutput({
   default: "native",
 });
+
 export default function App() {
   const [currentUser, setCurrentUser] = useState(null)
   const [isLoggedIn, setIsLoggedIn] = useState(false)
