@@ -35,7 +35,9 @@ const HomeScreen = ({ navigation }) => {
     "Kiến Trúc - Xây Dựng",
     "Marketing - Bán hàng",
     "Thể Thao - Nghệ Thuật",
-    "Truyện cười",
+    "Triết Học",
+    "Văn Học Việt Nam",
+    "Thư Viện Pháp Luật",
   ];
 
   const CategoryList = () => {

@@ -1,4 +1,4 @@
-import { Text, View, Pressable } from "react-native";
+import { Text, View, Pressable, Image, Alert } from "react-native";
 import React, { useContext } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -16,16 +16,24 @@ const ProfileScreen = ({ navigation }) => {
     }
   };
 
+  // Function to handle notification press
+  const handleNotificationPress = () => {
+    Alert.alert("Thông Báo", "Bạn chưa có thông báo mới");
+  };
+
   return (
     <SafeAreaView className="bg-white h-full p-6 justify-between">
-      <View className="mt-6">
+      <View className="mt-1">
         {isLoggedIn ? (
           <View className="items-center justify-center">
+            <Image style={{ resizeMode: 'contain', width: 200, height: 100 }} source={require('../../assets/Logo.png')} />
+            <Image style={{ resizeMode: 'contain', width: 200, height: 100 }} source={require('../../assets/profile-icon-design-free-vector.jpg')} />
             <Text className="text-lg font-bold">{currentUser?.name}</Text>
             <Text className="text-xs font-bold text-gray-500">{currentUser?.email}</Text>
           </View>
         ) : (
           <View className="items-center justify-center">
+            <Image style={{ resizeMode: 'contain', width: 200, height: 100 }} source={require('../../assets/Logo.png')} />
             <Text className="text-lg font-bold">Hãy Đăng Nhập!</Text>
           </View>
         )}
@@ -34,15 +42,12 @@ const ProfileScreen = ({ navigation }) => {
       {isLoggedIn && (
         <View className="mt-10">
           <View className="mb-4">
-            <Pressable onPress={() => navigation.navigate('TransactionHistory')} className="bg-gray-200 py-4 rounded-lg mb-2">
-              <Text className="font-bold text-black text-center">Lịch Sử Giao Dịch</Text>
-            </Pressable>
-
-            <Pressable onPress={() => navigation.navigate('BookOrders')} className="bg-gray-200 py-4 rounded-lg mb-2">
+            <Pressable onPress={() => navigation.navigate('order')} className="bg-gray-200 py-4 rounded-lg mb-2">
               <Text className="font-bold text-black text-center">Đơn Hàng Sách</Text>
             </Pressable>
 
-            <Pressable onPress={() => navigation.navigate('Notifications')} className="bg-gray-200 py-4 rounded-lg mb-2">
+            {/* Updated notification button to show an alert */}
+            <Pressable onPress={handleNotificationPress} className="bg-gray-200 py-4 rounded-lg mb-2">
               <Text className="font-bold text-black text-center">Thông Báo</Text>
             </Pressable>
 
