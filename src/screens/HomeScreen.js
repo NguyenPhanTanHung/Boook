@@ -25,7 +25,7 @@ const HomeScreen = ({ navigation }) => {
   const profile = () => {
     navigation.jumpTo("profile");
   }
-   
+
 
 
   const categories = [
@@ -67,7 +67,7 @@ const HomeScreen = ({ navigation }) => {
     })
     fetchAllProducts()
   }, [])
-  
+
   return (
     <ScrollView className="flex-1 bg-white">
       <View className="flex-row px-5 justify-between items-center">
@@ -75,11 +75,11 @@ const HomeScreen = ({ navigation }) => {
           <Image style={{ resizeMode: 'contain', width: '100%', height: '100%' }} source={require('../../assets/Logo.png')} />
         </View>
         {isLoggedIn ? <View>
-          <Pressable className="flex-row items-center justify-center border border-slate-400 rounded-full h-23 w-30 m-3"  onPress={profile}>
+          <Pressable className="flex-row items-center justify-center border border-slate-400 rounded-full h-23 w-30 m-3" onPress={profile}>
             <Image source={UserLogo} className="h-4 w-4 bg-transparent m-1"></Image>
-            <Text className="font-semibold py-2 pr-4 pl-2">Hello {currentUser .name}</Text>
+            <Text className="font-semibold py-2 pr-4 pl-2">Hello {currentUser.name}</Text>
           </Pressable>
-        </View> :(<View>
+        </View> : (<View>
           <Pressable className="flex-row items-center justify-center border border-slate-400 rounded-full h-23 w-30 m-3"
             onPress={() => setModalVisible(!modalVisible)}>
             <Image source={UserLogo} className="h-4 w-4 bg-transparent m-1"></Image>
@@ -107,8 +107,8 @@ const HomeScreen = ({ navigation }) => {
       </View>
       <View className="mt-1 my-2">
         <View className="flex-row justify-between items-center px-5">
-          <Text className="text-lg font-extrabold">Sách phù hợp với bạn</Text>
-          <Pressable onPress={() => navigation.navigate("productlistscreen")}>
+          <Text className="text-lg font-extrabold">Sách phù hợp với độ tuổi của bạn</Text>
+          <Pressable onPress={() => navigation.navigate("productlistscreen", {condition: 'ageCondition'})}>
             <Text className="text-xs text-gray-500">Xem tất cả</Text>
           </Pressable>
         </View>
@@ -116,22 +116,31 @@ const HomeScreen = ({ navigation }) => {
           className="mt-2 ml-5"
           horizontal={true}
           showsHorizontalScrollIndicator={false}>
-          {products && products?.map(product => (
-            <Pressable key={product.id} onPress={() => navigateToDetailScreen(product.id)}>
-              <NewArrivalsCard
-                title={product.title}
-                image={product.image}
-                description={product.description}
-                price={product.price}
-                bookName={product.bookName} />
-            </Pressable>
-          ))}
+
+          {products && products.filter(product => product.age < (currentUser?.age || 18)).length > 0 ? (
+            products
+              .filter(product => product.age < (currentUser?.age || 18))
+              .map(product => (
+                <Pressable key={product.id} onPress={() => navigateToDetailScreen(product.id)}>
+                  <NewArrivalsCard
+                    title={product.title}
+                    image={product.image}
+                    description={product.description}
+                    price={product.price}
+                    bookName={product.bookName}
+                  />
+                </Pressable>
+              ))
+          ) : (
+            <Text className="ml-5 mt-2 text-gray-500">Không có sản phẩm nào phù hợp.</Text>
+          )}
+
         </ScrollView>
       </View>
       <View className="mt-1 my-2">
         <View className="flex-row justify-between items-center px-5">
-          <Text className="text-lg font-extrabold">Sách phù hợp với bạn</Text>
-          <Pressable onPress={() => navigation.navigate("productlistscreen")}>
+          <Text className="text-lg font-extrabold">Tất cả sách</Text>
+          <Pressable onPress={() => navigation.navigate("productlistscreen", {condition: ''})}>
             <Text className="text-xs text-gray-500">Xem tất cả</Text>
           </Pressable>
         </View>
@@ -154,7 +163,7 @@ const HomeScreen = ({ navigation }) => {
       <View className="mt-1 my-2">
         <View className="flex-row justify-between items-center px-5">
           <Text className="text-lg font-extrabold">Giá rẻ</Text>
-          <Pressable onPress={() => navigation.navigate("productlistscreen")}>
+          <Pressable onPress={() => navigation.navigate("productlistscreen", {condition: 'cheap'})}>
             <Text className="text-xs text-gray-500">Xem tất cả</Text>
           </Pressable>
         </View>
@@ -180,7 +189,7 @@ const HomeScreen = ({ navigation }) => {
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
         onclose={() => setModalVisible(false)} />
-      
+
     </ScrollView>
   );
 };

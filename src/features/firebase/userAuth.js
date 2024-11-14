@@ -17,7 +17,7 @@ export const loginWithEmailAndPassword = async(email, password) => {
     }
 }
 
-export const registerWithEmailAndPassword = async(name, email, password) => {
+export const registerWithEmailAndPassword = async(name, email, password,age ) => {
     try {
         const res = await createUserWithEmailAndPassword(auth, email, password)
         const user = res.user
@@ -26,7 +26,8 @@ export const registerWithEmailAndPassword = async(name, email, password) => {
             uid:user.uid,
             name,
             email,
-            password
+            password,
+            age
         })
         return {success:true}
     } catch (error) {

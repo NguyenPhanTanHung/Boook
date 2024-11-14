@@ -46,7 +46,7 @@ const AuthenticationModal = ({ modalVisible, setModalVisible, onclose }) => {
     const handleRegister = async () => {
         setLoading(true);
         try {
-            const res = await registerWithEmailAndPassword(name, email, password);
+            const res = await registerWithEmailAndPassword(name, email, password, age);
             if (res.success === true) {
                 setType("login");
             }
