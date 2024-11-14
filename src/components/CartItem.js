@@ -2,7 +2,7 @@ import { Text, View, Image, Pressable } from "react-native";
 import React, { useContext } from "react";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import cartContext from "../features/context/cartContext";
-import { updateItemQty, removeItemById } from "../features/firebase/cart"; // Import các hàm xử lý số lượng và xóa
+import { increaseQuantity, removeItemById, decreaseQuantity } from "../features/firebase/cart"; // Import các hàm xử lý số lượng và xóa
 
 const CartItem = ({ bookName, image, price, title, qty, id }) => {
     const { cartItems, setCartItems } = useContext(cartContext);
@@ -20,13 +20,34 @@ const CartItem = ({ bookName, image, price, title, qty, id }) => {
     };
 
     // Hàm tăng số lượng
-    const increaseQty = async () => {
-
+    const increaseQty = async (id) => {
+        const item = cartItems.map(cartItem =>
+            cartItem.id === id ? { ...cartItem, qty: cartItem.qty + 1 } : cartItem
+        );
+        if (item) {
+            // Tăng số lượng sản phẩm
+            item.qty += 1;
+        };
+        setCartItems(item);
+        await increaseQuantity(id)
     };
 
     // Hàm giảm số lượng
-    const decreaseQty = async () => {
-    };
+    const decreaseQty = async (id) => {
+        if (qty > 1) {
+            const updatedCartItems = cartItems.map(cartItem =>
+                cartItem.id === id ? { ...cartItem, qty: cartItem.qty - 1 } : cartItem
+            );
+            setCartItems(updatedCartItems);
+            await decreaseQuantity(id)
+        } else {
+            setCartItems(cartItems.filter(item => item.id !== id));
+            const res = await removeItemById(id);
+            if (res.success === true) {
+                setCartItems(res.data);
+            }
+        }
+    }
 
     return (
         <View>
@@ -39,11 +60,11 @@ const CartItem = ({ bookName, image, price, title, qty, id }) => {
                         <Text className="font-bold" numberOfLines={1}>{bookName}</Text>
                         <Text className="text-xs">{title}</Text>
                         <View className="flex-row justify-center items-center">
-                            <Pressable className="px-3 py-1 bg-gray-300 border border-gray-300 rounded-tl-lg rounded-bl-lg" onPress={decreaseQty}>
+                            <Pressable className="px-3 py-1 bg-gray-300 border border-gray-300 rounded-tl-lg rounded-bl-lg" onPress={() => decreaseQty(id)}>
                                 <Text className="font-semibold">-</Text>
                             </Pressable>
                             <Text className="bg-white px-2 py-1 border border-gray-300"  >{qty}</Text>
-                            <Pressable className="px-3 py-1 bg-gray-300 border border-gray-300 rounded-tr-lg rounded-br-lg" onPress={increaseQty}>
+                            <Pressable className="px-3 py-1 bg-gray-300 border border-gray-300 rounded-tr-lg rounded-br-lg" onPress={() => increaseQty(id)}>
                                 <Text>+</Text>
                             </Pressable>
                         </View>

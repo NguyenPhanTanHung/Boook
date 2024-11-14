@@ -8,6 +8,7 @@ import ProfileScreen from '../screens/ProfileScreen'
 import React from "react";
 import CategoryScreen from '../components/CategoryScreen';
 import Search from '../components/Search';
+import Settings from "../screens/Settings";
 
 const Stack = createStackNavigator()
 
@@ -71,6 +72,7 @@ const ProfileStackNavigator = () => {
                 headerShown: false
             }}>
             <Stack.Screen name="profilescreen" component={ProfileScreen} />
+            <Stack.Screen name="settings" component={Settings} />
         </Stack.Navigator>
     )
 }

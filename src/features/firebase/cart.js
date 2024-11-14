@@ -75,3 +75,66 @@ export const removeItemById = async (id) => {
         return { success: false, error: error.message };
     }
 }
+
+export const increaseQuantity = async (itemId) => {
+    const userDocRef = doc(db, "users", auth.currentUser .uid);
+
+    try {
+        const userDocSnapshot = await getDoc(userDocRef);
+        if (userDocSnapshot.exists()) {
+            const cartItems = userDocSnapshot.data().cart || [];
+
+            // Tìm sản phẩm trong giỏ hàng
+            const item = cartItems.find(item => item.id === itemId);
+            if (item) {
+                // Tăng số lượng sản phẩm
+                item.qty += 1;
+
+                // Cập nhật giỏ hàng lên Firestore
+                await updateDoc(userDocRef, { cart: cartItems });
+                console.log("Quantity increased successfully in Firestore");
+
+                return { success: true, data: cartItems };
+            } else {
+                return { success: false, error: "Item not found in cart" };
+            }
+        }
+    } catch (error) {
+        console.error("Failed to increase quantity:", error);
+        return { success: false, error: error.message };
+    }
+}
+
+// Hàm giảm số lượng sản phẩm trong giỏ hàng
+export const decreaseQuantity = async (itemId) => {
+    const userDocRef = doc(db, "users", auth.currentUser .uid);
+
+    try {
+        const userDocSnapshot = await getDoc(userDocRef);
+        if (userDocSnapshot.exists()) {
+            const cartItems = userDocSnapshot.data().cart || [];
+
+            // Tìm sản phẩm trong giỏ hàng
+            const item = cartItems.find(item => item.id === itemId);
+            if (item) {
+                // Giảm số lượng sản phẩm
+                if (item.qty > 1) {
+                    item.qty -= 1; // Giảm nếu số lượng lớn hơn 1
+                } else {
+                    return { success: false, error: "Cannot decrease quantity below 1" };
+                }
+
+                // Cập nhật giỏ hàng lên Firestore
+                await updateDoc(userDocRef, { cart: cartItems });
+                console.log("Quantity decreased successfully in Firestore");
+
+                return { success: true, data: cartItems };
+            } else {
+                return { success: false, error: "Item not found in cart" };
+            }
+        }
+    } catch (error) {
+        console.error("Failed to decrease quantity:", error);
+        return { success: false, error: error.message };
+    }
+}

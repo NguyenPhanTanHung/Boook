@@ -38,7 +38,7 @@ const CartScreen = ({ navigation }) => {
       headerShown: false,
     });
     fetchCartItems();
-  }, [currentUser, cartItems?.length]);
+  }, [currentUser, cartItems]);
 
   return (
     <SafeAreaView className="flex-1 w-full p-5 bg-white">
