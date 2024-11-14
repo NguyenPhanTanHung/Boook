@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Modal, Pressable, View, Text, TextInput, TouchableOpacity, Alert, ActivityIndicator } from "react-native";
+import { Picker } from '@react-native-picker/picker'; // Nhập Picker từ thư viện mới
+import { Modal, Pressable, View, Text, TextInput, TouchableOpacity, Alert, ActivityIndicator, } from "react-native";
 import { registerWithEmailAndPassword, loginWithEmailAndPassword } from "../features/firebase/userAuth";
 import AuthContext from "../features/context/authContext";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
@@ -9,6 +10,7 @@ const AuthenticationModal = ({ modalVisible, setModalVisible, onclose }) => {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [age, setAge] = useState(18); // Khởi tạo độ tuổi mặc định
     const [loading, setLoading] = useState(false);
 
     const { currentUser, setCurrentUser, setIsLoggedIn } = useContext(AuthContext);
@@ -79,13 +81,13 @@ const AuthenticationModal = ({ modalVisible, setModalVisible, onclose }) => {
                     <Pressable className="flex-1 justify-center items-center bg-black/[0.5]">
                         <View className="w-[80%] bg-white p-6 rounded-lg">
                             {/* Sử dụng TouchableOpacity để bọc MaterialIcons */}
-                            <TouchableOpacity 
-                                style={{ position: "absolute", top: 15, right: 15, borderWidth: 0 }} 
+                            <TouchableOpacity
+                                style={{ position: "absolute", top: 15, right: 15, borderWidth: 0 }}
                                 onPress={close}
                             >
                                 <MaterialIcons name="close" size={30} />
                             </TouchableOpacity>
-                            
+
                             <Text className="font-bold mb-2">Email</Text>
                             <TextInput
                                 className="border border-slate-300 px-3 py-2"
@@ -102,7 +104,7 @@ const AuthenticationModal = ({ modalVisible, setModalVisible, onclose }) => {
                             />
                             <TouchableOpacity className="bg-black py-4 mt-6 rounded-lg" onPress={handleLogin}>
                                 {
-                                    loading ? <ActivityIndicator  size={'large'}/> : <Text className="text-white font-semibold text-center">Đăng nhập</Text>
+                                    loading ? <ActivityIndicator size={'large'} /> : <Text className="text-white font-semibold text-center">Đăng nhập</Text>
                                 }
                             </TouchableOpacity>
 
@@ -118,13 +120,13 @@ const AuthenticationModal = ({ modalVisible, setModalVisible, onclose }) => {
                     <Pressable className="flex-1 justify-center items-center bg-black/[0.5]">
                         <View className="w-[80%] p-6 bg-white rounded-lg">
                             {/* Sử dụng TouchableOpacity để bọc MaterialIcons */}
-                            <TouchableOpacity 
-                                style={{ position: "absolute", top: 15, right: 15, borderWidth: 0 }} 
+                            <TouchableOpacity
+                                style={{ position: "absolute", top: 15, right: 15, borderWidth: 0 }}
                                 onPress={close}
                             >
                                 <MaterialIcons name="close" size={30} />
                             </TouchableOpacity>
-                            
+
                             <Text className="font-bold mb-2">Name:</Text>
                             <TextInput
                                 className="border border-slate-300 px-3 py-2"
@@ -145,13 +147,23 @@ const AuthenticationModal = ({ modalVisible, setModalVisible, onclose }) => {
                                 onChangeText={setPassword}
                                 secureTextEntry={true}
                             />
+                            <Text className="font-bold mb-2">Tuổi: {age}</Text> {/* Hiển thị độ tuổi */}
+                            <Picker
+                                selectedValue={age}
+                                onValueChange={(itemValue) => setAge(itemValue)}
+                                style={{ height: 60, width: '100%', marginTop: 5 }}
+                            >
+                                {[...Array(100).keys()].map((value) => (
+                                    <Picker.Item key={value + 1} label={`${value + 1}`} value={`${value + 1}`} />
+                                ))}
+                            </Picker>
 
                             <TouchableOpacity
                                 className="bg-black py-4 mt-6 rounded-lg"
                                 onPress={handleRegister}
                             >
                                 {
-                                    loading ? <ActivityIndicator  size={'large'}/> : <Text className="text-white font-semibold text-center">Đăng ký</Text>
+                                    loading ? <ActivityIndicator size={'large'} /> : <Text className="text-white font-semibold text-center">Đăng ký</Text>
                                 }
                             </TouchableOpacity>
 

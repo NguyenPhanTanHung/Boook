@@ -1,5 +1,5 @@
-import { Text, View, Pressable } from "react-native";
-import React, { useContext } from "react";
+import { Text, View, Pressable,Modal,  TouchableOpacity, Image } from "react-native";
+import React, { useContext, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import AuthContext from '../features/context/authContext';

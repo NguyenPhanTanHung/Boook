@@ -107,7 +107,30 @@ const HomeScreen = ({ navigation }) => {
       </View>
       <View className="mt-1 my-2">
         <View className="flex-row justify-between items-center px-5">
-          <Text className="text-lg font-extrabold">Dành cho bạn</Text>
+          <Text className="text-lg font-extrabold">Sách phù hợp với bạn</Text>
+          <Pressable onPress={() => navigation.navigate("productlistscreen")}>
+            <Text className="text-xs text-gray-500">Xem tất cả</Text>
+          </Pressable>
+        </View>
+        <ScrollView
+          className="mt-2 ml-5"
+          horizontal={true}
+          showsHorizontalScrollIndicator={false}>
+          {products && products?.map(product => (
+            <Pressable key={product.id} onPress={() => navigateToDetailScreen(product.id)}>
+              <NewArrivalsCard
+                title={product.title}
+                image={product.image}
+                description={product.description}
+                price={product.price}
+                bookName={product.bookName} />
+            </Pressable>
+          ))}
+        </ScrollView>
+      </View>
+      <View className="mt-1 my-2">
+        <View className="flex-row justify-between items-center px-5">
+          <Text className="text-lg font-extrabold">Sách phù hợp với bạn</Text>
           <Pressable onPress={() => navigation.navigate("productlistscreen")}>
             <Text className="text-xs text-gray-500">Xem tất cả</Text>
           </Pressable>
