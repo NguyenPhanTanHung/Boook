@@ -1,6 +1,5 @@
 import React, { useEffect, useContext, useState } from 'react';
 import { View, Text, Pressable, Image, ScrollView, TextInput, FlatList, TouchableOpacity } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
 import UserLogo from "../../assets/user.png"
@@ -88,7 +87,7 @@ const HomeScreen = ({ navigation }) => {
           </Pressable>
         </View>)}
       </View>
-      <View className="mt-1 px-5">
+      <Pressable className="mt-1 px-5" onPress={() => navigation.navigate('search')}>
         <View className="flex-row bg-gray-200 p-2 px-3 items-center rounded-3x1">
           <View>
             <MaterialIcons name='search' size={24} color={'#111'} />
@@ -98,7 +97,7 @@ const HomeScreen = ({ navigation }) => {
             placeholderTextColor={'#666666'}
             className="px-2" />
         </View>
-      </View>
+      </Pressable>
       <View className="mt-4 px-5 font-extrabold">
         {CategoryList()}
       </View>
