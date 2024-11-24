@@ -51,9 +51,6 @@ const ProfileScreen = ({ navigation }) => {
               <Text className="font-bold text-black text-center">Thông Báo</Text>
             </Pressable>
 
-            <Pressable onPress={() => navigation.navigate('Settings')} className="bg-gray-200 py-4 rounded-lg">
-              <Text className="font-bold text-black text-center">Cài Đặt</Text>
-            </Pressable>
           </View>
 
           <View className="justify-center items-center">

@@ -39,10 +39,11 @@ const TotalSummaryCart = ({ totalPrice }) => {
 
     return (
         <View className="border border-gray-200 rounded-lg p-6">
+            <Text className="text-red">Thanh toán khi nhận hàng phí vận chuyển là 30.000 VND</Text>
             <View className="flex-row justify-between items-center">
                 <Text className="font-bold text-lg">Tổng :</Text>
                 <Text className="font-extrabold text-xl">
-                    {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(totalPrice)}
+                    {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(totalPrice + 30000)}
                 </Text>
             </View>
             <Pressable onPress={() => setModalVisible(true)} className="bg-black py-4 rounded-lg mt-6">
