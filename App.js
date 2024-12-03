@@ -1,14 +1,12 @@
 import { NativeWindStyleSheet } from "nativewind";
 import { NavigationContainer } from '@react-navigation/native';
 import React, { useState } from 'react';
-import { Modal } from "react-native";
+
 import TabNavigator from './src/navigation/TabNavigator';
 import { AuthProvider } from './src/features/context/authContext';
 import { ProductProvider } from './src/features/context/productContext';
 import { CartProvider} from './src/features/context/cartContext'
 import {OrderProvider} from './src/features/context/orderContext'
-import FloatButton from './src/components/FloatButton';
-import AIModal from "./src/components/AIModal";
 
 NativeWindStyleSheet.setOutput({
   default: "native",
@@ -21,7 +19,6 @@ export default function App() {
   const [currentProduct, setCurrentProduct] = useState(null);
   const [cartItems, setCartItems] = useState(null); 
   const [orders, setOrders] = useState(null);
-  const [modalVisible, setModalVisible] = useState(false);
 
   return (
     <AuthProvider
@@ -30,16 +27,9 @@ export default function App() {
         value={{products, setProducts, currentProduct, setCurrentProduct}}>
         <CartProvider value={{cartItems, setCartItems}}>
           <OrderProvider value={{orders, setOrders}}>
-            <FloatButton onPress={() => setModalVisible(true)}/>
             <NavigationContainer>
               <TabNavigator />
             </NavigationContainer>
-            <Modal
-              visible={modalVisible}
-              onRequestClose={() => setModalVisible(false)}
-            >
-              <AIModal onClose={() =>setModalVisible(false)}/>
-            </Modal>
           </OrderProvider>
           </CartProvider>
       </ProductProvider>

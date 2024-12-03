@@ -11,7 +11,6 @@
   "dependencies": {
     "@expo/webpack-config": "^19.0.0",
     "@firebase/util": "^1.9.3",
-    "@google/generative-ai": "^0.21.0",
     "@react-native-async-storage/async-storage": "^1.24.0",
     "@react-native-community/masked-view": "^0.1.11",
     "@react-native-community/slider": "^4.5.5",
