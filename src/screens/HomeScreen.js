@@ -9,6 +9,7 @@ import AuthenticationModal from '../components/AuthenticationModal';
 import AuthContext from '../features/context/authContext';
 import { getProducts } from '../features/firebase/product';
 import productContext from '../features/context/productContext';
+import FloatButton from '../components/FloatButton';
 
 const HomeScreen = ({ navigation }) => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -70,6 +71,7 @@ const HomeScreen = ({ navigation }) => {
 
   return (
     <ScrollView className="flex-1 bg-white">
+      <FloatButton onPress={() => navigation.navigate('ai')}/>
       <View className="flex-row px-5 justify-between items-center">
         <View className="rounded-full w-40 h-40 justify-center items-center">
           <Image style={{ resizeMode: 'contain', width: '100%', height: '100%' }} source={require('../../assets/Logo.png')} />
