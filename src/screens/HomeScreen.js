@@ -22,10 +22,11 @@ const HomeScreen = ({ navigation }) => {
   const navigateToCategoryScreen = (category) => {
     navigation.navigate("category", { category: category });
   }
-
   const profile = () => {
     navigation.jumpTo("profile");
   }
+
+
 
   const categories = [
     "Công Nghệ Thông Tin",
@@ -97,7 +98,7 @@ const HomeScreen = ({ navigation }) => {
             className="px-2" />
         </View>
       </Pressable>
-      <View className="mt-4 px-5 font-extrabold w-96">
+      <View className="mt-4 px-5 font-extrabold">
         {CategoryList()}
       </View>
       <View className="items-center content-center justify-center h-[41%] mt-1">
@@ -107,7 +108,7 @@ const HomeScreen = ({ navigation }) => {
       <View className="mt-1 my-2">
         <View className="flex-row justify-between items-center px-5">
           <Text className="text-lg font-extrabold">Sách phù hợp với độ tuổi của bạn</Text>
-          <Pressable onPress={() => navigation.navigate("productlistscreen", { condition: 'ageCondition' })}>
+          <Pressable onPress={() => navigation.navigate("productlistscreen", {condition: 'ageCondition'})}>
             <Text className="text-xs text-gray-500">Xem tất cả</Text>
           </Pressable>
         </View>
@@ -139,7 +140,7 @@ const HomeScreen = ({ navigation }) => {
       <View className="mt-1 my-2">
         <View className="flex-row justify-between items-center px-5">
           <Text className="text-lg font-extrabold">Tất cả sách</Text>
-          <Pressable onPress={() => navigation.navigate("productlistscreen", { condition: '' })}>
+          <Pressable onPress={() => navigation.navigate("productlistscreen", {condition: ''})}>
             <Text className="text-xs text-gray-500">Xem tất cả</Text>
           </Pressable>
         </View>
@@ -162,7 +163,7 @@ const HomeScreen = ({ navigation }) => {
       <View className="mt-1 my-2">
         <View className="flex-row justify-between items-center px-5">
           <Text className="text-lg font-extrabold">Giá rẻ</Text>
-          <Pressable onPress={() => navigation.navigate("productlistscreen", { condition: 'cheap' })}>
+          <Pressable onPress={() => navigation.navigate("productlistscreen", {condition: 'cheap'})}>
             <Text className="text-xs text-gray-500">Xem tất cả</Text>
           </Pressable>
         </View>
