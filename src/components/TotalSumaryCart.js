@@ -18,7 +18,7 @@ const TotalSummaryCart = ({ totalPrice }) => {
     const [deliveryTime, setDeliveryTime] = useState('');
 
     const placeOrder = async () => {
-        const res = await addToOrders( name, phone, address, deliveryTime );
+        const res = await addToOrders(name, phone, address, deliveryTime);
         setModalVisible(false);
         setCartItems([]);
         if (res.success === true) {
@@ -57,8 +57,8 @@ const TotalSummaryCart = ({ totalPrice }) => {
                 visible={modalVisible}
                 onRequestClose={() => setModalVisible(false)}
             >
-               <View className="flex-1 justify-center items-center bg-black/[0.5]">
-                <View className="bg-white rounded-lg p-6 w-80">
+                <View className="flex-1 justify-center items-center bg-black/[0.5]">
+                    <View className="bg-white rounded-lg p-6 w-80">
                         <Text className="font-bold text-lg mb-4">Nhập thông tin đặt hàng</Text>
                         <TextInput
                             placeholder="Tên người đặt"
