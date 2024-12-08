@@ -1,1 +1,1 @@
-export const geminiAPI = ''
+export const geminiAPI = 'AIzaSyBzeMYy8P2Fk-CtHpwD3QrXp5gsQD9Lh8I'

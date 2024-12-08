@@ -38,6 +38,7 @@ const HomeScreen = ({ navigation }) => {
     "Triết Học",
     "Văn Học Việt Nam",
     "Thư Viện Pháp Luật",
+    "Truyện Tranh",
   ];
 
   const CategoryList = () => {
