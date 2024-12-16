@@ -12,10 +12,10 @@ const TotalSummaryCart = ({ totalPrice }) => {
     const { setOrdersItems } = useContext(orderContext);
 
     const [modalVisible, setModalVisible] = useState(false);
-    const [name, setName] = useState('');
-    const [phone, setPhone] = useState('');
-    const [address, setAddress] = useState('');
-    const [deliveryTime, setDeliveryTime] = useState('');
+    const [name, setName] = useState('hung');
+    const [phone, setPhone] = useState('0987654321');
+    const [address, setAddress] = useState('123 xyz');
+    const [deliveryTime, setDeliveryTime] = useState('12');
     const [paymentMethod, setPaymentMethod] = useState('cash');
 
     const placeOrder = async () => {

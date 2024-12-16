@@ -43,20 +43,33 @@ export const addToOrders = async (name, phone, address, deliveryTime, paymentMet
                 await updateDoc(userDocRef, { orders: orderItems, cart: [] });
             }
             else {
+                const payload = {
+                    amount: totalPrice, 
+                    address: address,
+                    name: name,
+                    phone: phone,
+                    userid: auth.currentUser.uid,
+                    note: deliveryTime,
+                };
+                console.log("payload: ", payload);
+                
                 const response = await fetch('https://createpayment-pvkrujnynq-uc.a.run.app', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ amount: totalPrice, userid: auth.currentUser.uid })
+                    body: JSON.stringify(payload)
                 });
 
                 const responseData = await response.json();
-                console.log(responseData);
+                console.log("responseData: ", responseData);
 
                 if (response.ok && responseData?.order_url) {
                     Linking.openURL(responseData.order_url);
                     await updateDoc(userDocRef, { orders: orderItems, cart: [] });
+                } else {
+                    console.error("Error creating payment:", responseData);
+                    ToastAndroid.show("Không thể tạo đơn hàng. Vui lòng thử lại!", ToastAndroid.SHORT);
                 }
             }
 

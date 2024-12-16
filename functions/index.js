@@ -25,28 +25,44 @@ const config = {
 
 // Tạo đơn hàng thanh toán
 exports.createPayment = functions.https.onRequest(async (req, res) => {
-    res.set('Access-Control-Allow-Origin', '*'); // Cho phép tất cả origin
-    res.set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS'); // Cho phép các phương thức
-    res.set('Access-Control-Allow-Headers', 'Content-Type'); // Cho phép các header cần thiết
+    // Cấu hình header CORS
+    res.set('Access-Control-Allow-Origin', '*');
+    res.set('Access-Control-Allow-Methods', 'POST');
+    res.set('Access-Control-Allow-Headers', 'Content-Type');
 
+    // Xử lý preflight request
     if (req.method === 'OPTIONS') {
-        // Phản hồi cho preflight request
-        res.status(204).send('');
-        return;
+        return res.status(204).send('');
     }
-    const { amount, userid } = req.body;
 
+    // Chỉ cho phép phương thức POST
+    if (req.method !== 'POST') {
+        return res.status(405).send('Method Not Allowed');
+    }
+    
+    const { amount,  address, name, note, phone, userid } = req.body;
+    
+    if (!amount || !address || !name || !phone || !userid) {
+        return res.status(500).json({ message: 'Cannot create payment without required information' });
+    }
+
+    const embed_data = {
+        name,
+        phone,
+        address,
+    };
     const transID = Math.floor(Math.random() * 1000000);
 
     const order = {
         app_id: config.app_id,
         app_trans_id: `${moment().format('YYMMDD')}_${transID}`,
-        app_time: Date.now(),
-        amount: amount,
         app_user: userid,
-        item: [],
-        embed_data: [],
+        app_time: Date.now(),
+        item: JSON.stringify([{"itemid":"knb","itename":"kim nguyen bao","itemprice":198400,"itemquantity":1}]),
+        embed_data: JSON.stringify(embed_data),
+        amount: amount,
         callback_url: 'https://paymentcallback-pvkrujnynq-uc.a.run.app',
+        description: note,
         bank_code: '',
     };
 
